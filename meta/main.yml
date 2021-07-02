@@ -1,0 +1,9 @@
+---
+  galaxy_info:
+    role_name: ansible-epic-tuned
+    author: Lyas Spiehler
+    description: Ansible role to configure tuned on Epic RHEL servers
+    company: Sapphire Health
+  collections: []
+  dependencies: []
+...

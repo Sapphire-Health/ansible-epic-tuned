@@ -1,0 +1,6 @@
+---
+  - name: Install multiple dependencies
+    yum:
+      name:
+      - tuned
+    state: latest
