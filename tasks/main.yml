@@ -3,4 +3,21 @@
     yum:
       name:
       - tuned
-    state: latest
+      state: latest
+  - name: Configure hugepages in tuned config
+    lineinfile:
+      path: /etc/tuned/epic/tuned.conf
+      regexp: '^#vm.nr_hugepages =|^vm.nr_hugepages ='
+      line: vm.nr_hugepages = {{ tuned['vm.nr_hugepages'] }}
+  - name: Start and enable tuned service
+    service:
+      name: tuned
+      state: started
+      enabled: yes
+  - name: Check current hugepages config to determine if reboot is required
+    command: sysctl vm.nr_hugepages
+    register: hugepages
+  - name:
+    debug:
+      msg: "A REBOOT IS REQUIRED BEFORE THE HUGEPAGES CONFIGURATION IN TUNED WILL TAKE EFFECT"
+    when: hugepages.stdout.replace('vm.nr_hugepages = ', '') != tuned['vm.nr_hugepages']
